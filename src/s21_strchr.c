@@ -1,6 +1,15 @@
-#include "init.h"
+#include "s21_string.h"
 
 char *s21_strchr(const char *str, int c) {
-  for (; *str && *str != c; str++);
-  return (char *)str;
+  while (*str) {
+    if (*str == (char)c) {
+      return (char *)str;
+    }
+    str++;
+  }
+
+  if (c == '\0') {
+    return (char *)str;
+  }
+  return NULL;
 }
