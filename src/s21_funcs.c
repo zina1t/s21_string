@@ -1,5 +1,17 @@
 #include "s21_string.h"
 
+struct {
+  int align;
+  int plus;
+  int minus;
+  int space;
+  int hash;
+  int zero;
+  int width;
+  int precision;
+  char length;
+} specs;
+
 char* int_to_str(int num, char* str) {
   char* p = str;
   int temp_num = num;
@@ -101,7 +113,20 @@ char* handle_unsigned_int(char* p, va_list args) {
   return p;
 }
 
+void init_specs() {
+  specs.align = 0;
+  specs.plus = 0;
+  specs.minus = 0;
+  specs.space = 0;
+  specs.hash = 0;
+  specs.zero = 0;
+  specs.width = 0;
+  specs.precision = 0;
+  specs.length = '\0';
+}
+
 int s21_sprintf(char* str, const char* format, ...) {
+  init_specs();
   va_list args;
   va_start(args, format);
   char* p = str;
@@ -109,6 +134,40 @@ int s21_sprintf(char* str, const char* format, ...) {
   while (*f) {
     if (*f == '%') {
       f++;
+
+      while (*f == '-' || *f == '+' || *f == ' ') {
+        if (*f == '-')
+          specs.minus = 1;
+        else if (*f == '+')
+          specs.plus = 1;
+        else if (*f == ' ')
+          specs.space = 1;
+        f++;
+      }
+
+      // Width description
+      if (*f >= '0' && *f <= '9') {
+        while (*f >= '0' && *f <= '9') {
+          specs.width = specs.width * 10 + (*f - '0');
+          f++;
+        }
+      }
+
+      // Precision description
+      if (*f == '.') {
+        f++;
+        while (*f >= '0' && *f <= '9') {
+          specs.precision = specs.precision * 10 + (*f - '0');
+          f++;
+        }
+      }
+
+      // Length description
+      if (*f == 'h' || *f == 'l') {
+        specs.length = *f;
+        f++;
+      }
+
       switch (*f) {
         case 'd':
           p = handle_int(p, args);
