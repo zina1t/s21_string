@@ -2,7 +2,7 @@
 
 s21_size_t s21_strcspn(const char *str1, const char *str2) {
   unsigned int len = 0;
-  if ((str1 == NULL) || (str2 == NULL)) {
+  if ((str1 == s21_NULL) || (str2 == s21_NULL)) {
     return len;
   }
   while (*str1) {

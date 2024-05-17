@@ -9,5 +9,5 @@ char* s21_strstr(const char* haystack, const char* needle) {
       return (char*)haystack;
     }
   }
-  return NULL;
+  return s21_NULL;
 }
