@@ -144,16 +144,12 @@ int s21_sprintf(char* str, const char* format, ...) {
           specs.space = 1;
         f++;
       }
-
-      // Width description
       if (*f >= '0' && *f <= '9') {
         while (*f >= '0' && *f <= '9') {
           specs.width = specs.width * 10 + (*f - '0');
           f++;
         }
       }
-
-      // Precision description
       if (*f == '.') {
         f++;
         while (*f >= '0' && *f <= '9') {
@@ -161,8 +157,6 @@ int s21_sprintf(char* str, const char* format, ...) {
           f++;
         }
       }
-
-      // Length description
       if (*f == 'h' || *f == 'l') {
         specs.length = *f;
         f++;
